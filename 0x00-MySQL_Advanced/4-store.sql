@@ -1,16 +1,16 @@
--- creates a trigger that decreases the quantity of an item 
--- after adding a new order
-DROP TABLE IF EXISTS items;
-DROP TABLE IF EXISTS orders;
+-- 4. Buy buy buy
+-- creates a trigger that decreases the quantity of an item
+-- after adding a new order.
 
-CREATE TABLE IF NOT EXISTS items (
-    name VARCHAR(255) NOT NULL,
-    quantity int NOT NULL DEFAULT 10
-);
+DROP TRIGGER IF EXISTS update_item;
+DELIMITER $$ ;
 
-CREATE TABLE IF NOT EXISTS orders (
-    item_name VARCHAR(255) NOT NULL,
-    number int NOT NULL
-);
+CREATE TRIGGER update_item BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+    UPDATE items
+    SET quantity = quantity - NEW.number
+    WHERE name = NEW.item_name;
+END; $$
 
-INSERT INTO items (name) VALUES ("apple"), ("pineapple"), ("pear");
+DELIMITER ; $$
