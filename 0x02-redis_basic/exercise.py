@@ -6,7 +6,7 @@ from uuid import uuid4
 from functools import wraps
 
 
-def count_call(method: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """takes method Callable & returns Callable"""
     key = method.__qualname__
 
